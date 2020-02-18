@@ -1,0 +1,152 @@
+context TB {
+
+    entity CUSTOMER {
+        key CUST_ID			: Integer not null;
+        	CUST_CPF		: Integer64 not null;
+            CUST_NAME		: String(50);
+            CUST_BIRTH_DATE	: Date;
+            CUST_SEX		: Char(1);
+            CUST_SEGMENT	: Char(1);
+            CUST_COUNTRY	: String(2);
+            CUST_STATE		: String(2);
+            CUST_LIFE_SPEND	: Double;
+            CUST_NEW_SPEND	: Double;
+            CUST_INCOME		: Double;
+    };
+
+/*
+	entity TransacaoFinanceira {
+        key id_tf				: Integer generated always as identity;
+            pessoaOrigem        : Integer64 not null;
+            pessoaDestino       : Integer64 not null;
+            bancoOrigem			: Integer;
+            agenciaOrigem       : Integer;
+            contaOrigem    		: Integer;
+            paisOrigem			: String(50);
+            localizacaoOrigem	: Integer;
+            bancoDestino		: Integer;
+            agenciaDestino      : Integer;
+            contaDestino    	: Integer;
+            paisDestino			: String(50);
+            localizacaoDestino	: Integer;
+			data				: UTCTimestamp;
+			valor				: Integer;
+			moeda				: String(3);
+			tipoTransacao		: String(50);
+			observacao			: String(100);
+    };
+
+    entity Localizacao {
+        key id_loc				: Integer not null;
+            localizacao	        : hana.ST_GEOMETRY(3857);
+    };
+*/
+};
+
+/* ANTES DO BUILD do DB Module, executar o código abaixo em uma console SQL deste HDI para habilitar sistema espacial 3857 necessário para plotar no mapa/cartografia do SAC
+Ver a Nota SAP: https://launchpad.support.sap.com/#/notes/0002395407, e executar o passo a passo do PDF referenciado na Nota
+
+Para encontrar as coordenadas: https://epsg.io/transform#s_srs=4326&t_srs=3857&x=-51.0922619&y=-30.0469931
+
+CREATE SPATIAL REFERENCE SYSTEM "WGS 84 / Pseudo-Mercator" IDENTIFIED BY 3857
+TYPE PLANAR
+SNAP TO GRID 1e-4
+TOLERANCE 1e-4
+COORDINATE X BETWEEN -20037508.3427892447 AND 20037508.3427892447
+COORDINATE Y BETWEEN -19929191.7668547928 AND 19929191.766854766
+ORGANIZATION "EPSG" IDENTIFIED BY 3857
+LINEAR UNIT OF MEASURE "metre"
+ANGULAR UNIT OF MEASURE NULL
+POLYGON FORMAT 'EvenOdd'
+STORAGE FORMAT 'Internal'
+DEFINITION 'PROJCS["Popular Visualisation CRS / Mercator",GEOGCS["Popular Visualisation CRS",DATUM["Popular_Visualisation_Datum",SPHEROID["Popular Visualisation     Sphere",6378137,0,AUTHORITY["EPSG","7059"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6055"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4055"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],AUTHORITY["EPSG","3785"],AXIS["X",EAST],AXIS["Y",NORTH]]'
+TRANSFORM DEFINITION '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs';
+
+Exemplos de grant específicos para a tabela:
+{   "role":{   "name": "Localizacao_SELECT_WITH_GRANT_OPTION#",   "object_privileges":[   {      "name":"TB.Localizacao",      "type": "TABLE",      "privileges_with_grant_option":["SELECT"]   }   ]   } }
+{   "role":{   "name": "TransacaoFinanceira_SELECT",   "object_privileges":[   {      "name":"TransacaoFinanceiraCV",      "type": "VIEW",      "privileges":["SELECT"]   }   ]   } }
+
+Exemplos de grants com diferentes estratégias:
+Dar grants como ADMIN do HDI:
+
+set schema "LAVAJATOHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE LAVAJATOHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO LAVAJATOHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'TransacaoFinanceira_UNMASKED', '', 'SAC' );
+CALL LAVAJATOHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( LAVAJATOHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+--CALL LAVAJATOHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( LAVAJATOHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE LAVAJATOHDI#DI.#ROLES;
+
+set schema "LAVAJATOHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE LAVAJATOHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO LAVAJATOHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'GrantSELECTonSchemaLAVAJATOHDI', '', 'SAC' );
+INSERT INTO LAVAJATOHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'GrantSELECTonSchemaLAVAJATOHDI', '', '_SYS_REPO' );
+--CALL LAVAJATOHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( LAVAJATOHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL LAVAJATOHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( LAVAJATOHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE LAVAJATOHDI#DI.#ROLES;
+
+Para grant com "with grant option", precisa ser pelo HANA Studio via SQL conectado como SYSTEM que tem ROLE ADMIN
+GRANT "LAVAJATOHDI"."GrantSELECTonSchemaLAVAJATOHDI_with_grant_option#" TO _SYS_REPO;
+GRANT "LAVAJATOHDI"."Localizacao_SELECT_WITH_GRANT_OPTION#" TO _SYS_REPO;
+
+set schema "LAVAJATOHDI#DI";
+create local temporary column table "#PRIVILEGES" like "_SYS_DI"."TT_SCHEMA_PRIVILEGES"; 
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('SELECT', '', '_SYS_REPO');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('INSERT', '', '_SYS_REPO');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('UPDATE', '', '_SYS_REPO');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('DELETE', '', '_SYS_REPO');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('REFERENCES', '', '_SYS_REPO');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('EXECUTE', '', '_SYS_REPO');
+--call "LAVAJATOHDI#DI"."GRANT_CONTAINER_SCHEMA_PRIVILEGES"("#PRIVILEGES", "_SYS_DI"."T_NO_PARAMETERS", ?, ?, ?);
+call "LAVAJATOHDI#DI"."REVOKE_CONTAINER_SCHEMA_PRIVILEGES"("#PRIVILEGES", "_SYS_DI"."T_NO_PARAMETERS", ?, ?, ?);
+drop table "#PRIVILEGES";
+
+set schema "LAVAJATOHDI#DI";
+create local temporary column table "#PRIVILEGES" like "_SYS_DI"."TT_SCHEMA_PRIVILEGES"; 
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('SELECT', '', 'SAC');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('INSERT', '', 'SAC');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('UPDATE', '', 'SAC');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('DELETE', '', 'SAC');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('REFERENCES', '', 'SAC');
+insert into "#PRIVILEGES" ("PRIVILEGE_NAME", "PRINCIPAL_SCHEMA_NAME", "PRINCIPAL_NAME") values ('EXECUTE', '', 'SAC');
+--call "LAVAJATOHDI#DI"."GRANT_CONTAINER_SCHEMA_PRIVILEGES"("#PRIVILEGES", "_SYS_DI"."T_NO_PARAMETERS", ?, ?, ?);
+call "LAVAJATOHDI#DI"."REVOKE_CONTAINER_SCHEMA_PRIVILEGES"("#PRIVILEGES", "_SYS_DI"."T_NO_PARAMETERS", ?, ?, ?);
+drop table "#PRIVILEGES";
+
+set schema "LAVAJATOHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE LAVAJATOHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO LAVAJATOHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'Localizacao_SELECT_WITH_GRANT_OPTION#', '', 'SAC' );
+INSERT INTO LAVAJATOHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'Localizacao_SELECT_WITH_GRANT_OPTION#', '', 'SAC' );
+CALL LAVAJATOHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( LAVAJATOHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+--CALL LAVAJATOHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( LAVAJATOHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE LAVAJATOHDI#DI.#ROLES;
+
+https://developers.sap.com/tutorials/xsa-setup-new-space.html
+https://developers.sap.com/tutorials/xsa-tenant-db-space.html
+xs-admin-login
+xs enable-tenant-database HDB
+xs map-tenant-database -o org -s development HDB
+
+Neste projeto não estamos usando NameSpace
+//namespace LavagemDinheiroApp.LavagemDinheiroDB;
+
+
+
+COMO HOJE VOCÊS FAZEM OS CRUZAMENTOS? COM QUERY? COMO ANALIZAM? QUE TIPO DE GRAFICOS?
+O MAIOR PROBLEMA DAS EMPRESAS, NÃO É ARMAZENAR OS DADOS, MAS EXTRAIR INSIGHTS. E A INOVACAO, ESTA NAS FORMAS VISUAIS, COMO GRAFOS E GEOREFERENCIAMENTO.
+OS BANCOS INTERNACIONAIS APENAS ABREM CONTAS SE O CLINETE INFORMAR O CPF
+insights no sac
+mapa no sac
+transacoes de telco
+caso francisco com o filho
+http://sap-gcp-hana-4:8000/sap/hana/graph/viewer/
+https://developers.sap.com/tutorials/xsa-hdi-module.html
+https://help.sap.com/viewer/b3ee5778bc2e4a089d3299b82ec762a7/2.0.03/en-US/0cb80d7bc5b54ddda700b3f797039203.html
+incluir consultas surpresa
+odata
+deploy em cloud
+Paradise Papers
+Neo4j
+Linkurious
+https://demo-presalesbrazil.us10.sapanalytics.cloud
+novo
+*/
