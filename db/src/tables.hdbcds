@@ -48,7 +48,7 @@ context TB {
 	@Comment				: 'Credit Card Transactions Table'
     entity CARD_TRANSACTIONS {
         key CT_ID			: Integer not null;
-            CT_TIMESTAMP	: UTCTimestamp;
+            CT_DATE			: LocalDate;
         	CT_CARD_ID		: Integer;
             CT_CUST_ID		: Integer;
             CT_MER_ID		: Integer;
