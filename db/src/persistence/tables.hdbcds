@@ -48,7 +48,7 @@ context TB {
 	@Comment				: 'Credit Card Transactions Table'
     entity CARD_TRANSACTIONS {
         key CT_ID			: Integer not null;
-            CT_DATE			: LocalDate;
+        key CT_DATE			: LocalDate;
         	CT_CARD_ID		: Integer;
             CT_CUST_ID		: Integer;
             CT_MER_ID		: Integer;
@@ -59,6 +59,10 @@ context TB {
             CT_STATUS		: Integer;
     } technical configuration {
       column store;
+      partition by range (year(CT_DATE)) 
+			(partition '2008' <= values < '2019', 
+			 partition '2019' <= values < '2020',
+			 partition others);
     };
 
 	@Comment						: 'Merchants Table'
@@ -69,9 +73,12 @@ context TB {
             MER_SEGMENT				: Integer;
             MER_ADDRESS				: String(50);
 			@Comment				: 'GPS coordination for location - georeference'
-			MER_POSITION			: hana.ST_POINT(3857);
+			MER_POSITION			: hana.ST_POINT(4326);
 			@Comment				: '1-Yes, 2-No'
 			MER_FLAG_VIRTUAL_STORE	: Integer;
+			MER_POSITION2			: hana.ST_POINT(3857);
+			MER_POSITION3			: hana.ST_GEOMETRY(4326);
+			MER_POSITION4			: hana.ST_GEOMETRY(3857);
     } technical configuration {
       column store;
       unload priority 0;
@@ -106,7 +113,8 @@ context TB {
 */
 };
 
-/* ANTES DO BUILD do DB Module, executar o código abaixo em uma console SQL deste HDI para habilitar sistema espacial 3857 necessário para plotar no mapa/cartografia do SAC
+/* 
+ANTES DO BUILD do DB Module, executar o código abaixo em uma console SQL deste HDI para habilitar sistema espacial 3857 necessário para plotar no mapa/cartografia do SAC
 Ver a Nota SAP: https://launchpad.support.sap.com/#/notes/0002395407, e executar o passo a passo do PDF referenciado na Nota
 
 Para encontrar as coordenadas: https://epsg.io/transform#s_srs=4326&t_srs=3857&x=-51.0922619&y=-30.0469931
@@ -192,24 +200,50 @@ xs map-tenant-database -o org -s development HDB
 Neste projeto não estamos usando NameSpace
 //namespace LavagemDinheiroApp.LavagemDinheiroDB;
 
+CREATE REMOTE SOURCE "SAOLEOPOLDO" ADAPTER "hanaodbc" CONFIGURATION '<?xml version="1.0" encoding="UTF-8"?>
+<ConnectionProperties name="connection_properties">
+<PropertyEntry name="adapterversion">1.0</PropertyEntry>
+<PropertyEntry name="connectionmode">Adapter Properties</PropertyEntry>
+<PropertyEntry name="driver">libodbcHDB.so</PropertyEntry>
+<PropertyEntry name="server">saoleopoldo</PropertyEntry>
+<PropertyEntry name="port">30015</PropertyEntry>
+<PropertyEntry name="dml_mode">readonly</PropertyEntry>
+<PropertyEntry name="linkeddatabase_mode">optimized</PropertyEntry>
+<PropertyEntry name="extraadapterproperties"></PropertyEntry>
+</ConnectionProperties>' WITH CREDENTIAL TYPE 'PASSWORD'
 
+CREATE REMOTE SOURCE "PALOALTO" ADAPTER "hanaodbc" CONFIGURATION '<?xml version="1.0" encoding="UTF-8"?>
+<ConnectionProperties name="connection_properties">
+<PropertyEntry name="adapterversion">1.0</PropertyEntry>
+<PropertyEntry name="connectionmode">Adapter Properties</PropertyEntry>
+<PropertyEntry name="driver">libodbcHDB.so</PropertyEntry>
+<PropertyEntry name="server">paloalto</PropertyEntry>
+<PropertyEntry name="port">30015</PropertyEntry>
+<PropertyEntry name="dml_mode">readonly</PropertyEntry>
+<PropertyEntry name="linkeddatabase_mode">optimized</PropertyEntry>
+<PropertyEntry name="extraadapterproperties"></PropertyEntry>
+</ConnectionProperties>' WITH CREDENTIAL TYPE 'PASSWORD'
 
-COMO HOJE VOCÊS FAZEM OS CRUZAMENTOS? COM QUERY? COMO ANALIZAM? QUE TIPO DE GRAFICOS?
-O MAIOR PROBLEMA DAS EMPRESAS, NÃO É ARMAZENAR OS DADOS, MAS EXTRAIR INSIGHTS. E A INOVACAO, ESTA NAS FORMAS VISUAIS, COMO GRAFOS E GEOREFERENCIAMENTO.
-OS BANCOS INTERNACIONAIS APENAS ABREM CONTAS SE O CLINETE INFORMAR O CPF
-insights no sac
-mapa no sac
-transacoes de telco
-caso francisco com o filho
-http://sap-gcp-hana-4:8000/sap/hana/graph/viewer/
-https://developers.sap.com/tutorials/xsa-hdi-module.html
-https://help.sap.com/viewer/b3ee5778bc2e4a089d3299b82ec762a7/2.0.03/en-US/0cb80d7bc5b54ddda700b3f797039203.html
-incluir consultas surpresa
-odata
-deploy em cloud
-Paradise Papers
-Neo4j
-Linkurious
-https://demo-presalesbrazil.us10.sapanalytics.cloud
-novo
+MER_POSITION			: hana.ST_POINT(4326); --or 3857
+
+Rodar como SAPADMIN
+GRANT CREATE VIRTUAL TABLE ON REMOTE SOURCE "SQLSERVER" TO SHOWCASEHDI#OO
+GRANT CREATE VIRTUAL TABLE ON REMOTE SOURCE "PALOALTO" TO SHOWCASEHDI#OO;
+GRANT LINKED DATABASE ON REMOTE SOURCE "PALOALTO" TO SHOWCASEHDI#OO;
+ALTER SYSTEM ALTER CONFIGURATION ('indexserver.ini', 'SYSTEM') SET ('smart_data_access', 'enable_xda_view_unfolding') = 'false' WITH RECONFIGURE;
+
+Internal Presales DWC Agents
+=============================
+HANA_SAOLEOPOLDO
+zeus.hana.prod.us-east-1.whitney.dbaas.ondemand.com
+22497
+DP_MSG_HANA_SAOLEOPOLDO
+<Y5qB+3Sz0r~+YDW
+
+HANA_PALOALTO
+zeus.hana.prod.us-east-1.whitney.dbaas.ondemand.com
+22497
+DP_MSG_HANA_PALOALTO
+i9Q5c#X/rE]75Nd]
+
 */

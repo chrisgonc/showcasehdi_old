@@ -1,5 +1,5 @@
 {
-  "PALOALTO_TESTE": {
+  "LINKDB.PALOALTO.TESTE": {
     "target": {
       "remote": "PALOALTO",
       "schema": "SAPADMIN",

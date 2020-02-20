@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_GEO" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CV_GEO.hdbcalculationview"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="TB.MERCHANT">
+    <resourceUri>TB.MERCHANT</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="MER_ID"/>
+      <viewAttribute id="MER_CNPJ"/>
+      <viewAttribute id="MER_SEGMENT"/>
+      <viewAttribute id="MER_ADDRESS"/>
+      <viewAttribute id="MER_POSITION"/>
+      <viewAttribute id="MER_FLAG_VIRTUAL_STORE"/>
+      <viewAttribute id="MER_POSITION2"/>
+      <viewAttribute id="MER_POSITION3"/>
+      <viewAttribute id="MER_POSITION4"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="TB.MERCHANT"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Projection_1">
+  <attributes>
+    <attribute id="MER_SEGMENT" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="1-Retailer, 2-Services, 3-Tourism"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MER_SEGMENT"/>
+    </attribute>
+    <attribute id="MER_ADDRESS" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MER_ADDRESS"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MER_ADDRESS"/>
+    </attribute>
+    <attribute id="MER_POSITION3" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MER_POSITION3"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MER_POSITION3"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="MER_ID" order="1" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="MER_ID"/>
+      <measureMapping columnObjectName="Projection_1" columnName="MER_ID"/>
+    </measure>
+    <measure id="MER_CNPJ" order="2" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="MER_CNPJ"/>
+      <measureMapping columnObjectName="Projection_1" columnName="MER_CNPJ"/>
+    </measure>
+    <measure id="MER_FLAG_VIRTUAL_STORE" order="5" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="1-Yes, 2-No"/>
+      <measureMapping columnObjectName="Projection_1" columnName="MER_FLAG_VIRTUAL_STORE"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="191"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

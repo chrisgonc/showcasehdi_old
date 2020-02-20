@@ -1,0 +1,10 @@
+{
+ "SQLSERVER_Customer" : {
+    "target" : { 
+       "remote"   : "SQLSERVER",
+       "database" : "sqlserver", 
+       "schema"   : "SalesLT", 
+       "object"   : "Customer" 
+    }
+  }
+}
