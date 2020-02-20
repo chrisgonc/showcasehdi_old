@@ -1,0 +1,9 @@
+{
+  "PALOALTO_TESTE": {
+    "target": {
+      "remote": "PALOALTO",
+      "schema": "SAPADMIN",
+      "object": "TESTE"
+    }
+  }
+}
