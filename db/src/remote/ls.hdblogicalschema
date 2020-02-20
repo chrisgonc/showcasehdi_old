@@ -1,0 +1,9 @@
+{
+ "SQLSERVER" : { 
+    "target" : { 
+       "remote"   : "SQLSERVER",
+       "database" : "sqlserver", 
+       "schema"   : "SalesLT"
+    }
+ }
+} 

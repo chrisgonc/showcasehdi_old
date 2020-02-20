@@ -28,17 +28,25 @@
 </calculationViews>
 <logicalModel id="Projection_1">
   <attributes>
-    <attribute id="MER_SEGMENT" order="3" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="1-Retailer, 2-Services, 3-Tourism"/>
-      <keyMapping columnObjectName="Projection_1" columnName="MER_SEGMENT"/>
-    </attribute>
     <attribute id="MER_ADDRESS" order="4" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="MER_ADDRESS"/>
       <keyMapping columnObjectName="Projection_1" columnName="MER_ADDRESS"/>
     </attribute>
-    <attribute id="MER_POSITION3" order="6" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="MER_POSITION" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MER_POSITION"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MER_POSITION"/>
+    </attribute>
+    <attribute id="MER_POSITION2" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MER_POSITION2"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MER_POSITION2"/>
+    </attribute>
+    <attribute id="MER_POSITION3" order="8" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="MER_POSITION3"/>
       <keyMapping columnObjectName="Projection_1" columnName="MER_POSITION3"/>
+    </attribute>
+    <attribute id="MER_POSITION4" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MER_POSITION4"/>
+      <keyMapping columnObjectName="Projection_1" columnName="MER_POSITION4"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>
@@ -51,8 +59,12 @@
       <descriptions defaultDescription="MER_CNPJ"/>
       <measureMapping columnObjectName="Projection_1" columnName="MER_CNPJ"/>
     </measure>
-    <measure id="MER_FLAG_VIRTUAL_STORE" order="5" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="1-Yes, 2-No"/>
+    <measure id="MER_SEGMENT" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="MER_SEGMENT"/>
+      <measureMapping columnObjectName="Projection_1" columnName="MER_SEGMENT"/>
+    </measure>
+    <measure id="MER_FLAG_VIRTUAL_STORE" order="6" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="MER_FLAG_VIRTUAL_STORE"/>
       <measureMapping columnObjectName="Projection_1" columnName="MER_FLAG_VIRTUAL_STORE"/>
     </measure>
   </baseMeasures>

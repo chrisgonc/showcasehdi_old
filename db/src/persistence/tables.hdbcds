@@ -9,7 +9,7 @@ context TB {
             CUST_BIRTH_DATE	: LocalDate;
 			@Comment		: 'M-Male, F-Female'
             CUST_SEX		: String(1);
-			@Comment		: '1- , 2- , 3- '
+			@Comment		: '1-Silver , 2-Gold , 3-Platinum'
             CUST_SEGMENT	: String(1);
             @Comment		: 'BR-Brazil, AR-Argentina, CH-Chile'
             CUST_COUNTRY	: String(2);
@@ -31,14 +31,14 @@ context TB {
         key CARD_ID				: Integer not null;
         	CARD_NUM			: Integer64 not null;
             CARD_VALIDITY		: String(5);
-			@Comment			: '1-Visa, 2-Mastercard'
+			@Comment			: '1-Visa, 2-Mastercard, 3-ELO'
             CARD_FLAG			: Integer;
-        	@Comment			: '1-, 2-, 3-'
+        	@Comment			: '1-Black, 2-Platinum, 3-Gold, 4-Standard'
             CARD_CATEGORY		: Integer;
-        	@Comment			: '1-Yes, 2-No'
+        	@Comment			: '0-No, 1-Yes'
             CARD_INTERNATIONAL	: Integer;
             CARD_LIMIT			: hana.SMALLINT;
-        	@Comment			: '1-Active, 2-Blocked'
+        	@Comment			: '0-Blocked, 1-Active'
             CARD_STATUS			: Integer;
     } technical configuration {
       column store;
@@ -48,10 +48,10 @@ context TB {
 	@Comment				: 'Credit Card Transactions Table'
     entity CARD_TRANSACTIONS {
         key CT_ID			: Integer not null;
-        key CT_DATE			: LocalDate;
-        	CT_CARD_ID		: Integer;
-            CT_CUST_ID		: Integer;
-            CT_MER_ID		: Integer;
+        key CT_DATE			: LocalDate not null;
+        	CT_CARD_ID		: Integer not null;
+            CT_CUST_ID		: Integer not null;
+            CT_MER_ID		: Integer not null;
             CT_AMOUNT		: Double;
             @Comment		: '1-Yes, 2-No'
             CT_FLAG_FRAUD	: Integer;
