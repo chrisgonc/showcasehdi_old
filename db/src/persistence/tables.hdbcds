@@ -51,9 +51,9 @@ context TB {
             CT_CUST_ID		: Integer not null;
             CT_MER_ID		: Integer not null;
             CT_AMOUNT		: Double not null;
-            @Comment		: '0-No, 1-Yes'
+            @Comment		: 'Fraud: 0-No, 1-Yes'
             CT_FLAG_FRAUD	: Integer;
-            @Comment		: '0-Inactive, 1-Active'
+            @Comment		: 'Status: 0-Inactive, 1-Active'
             CT_STATUS		: Integer;
     } technical configuration {
       column store;
@@ -66,32 +66,32 @@ context TB {
     };
 
 	@Comment				: 'Credit Card Transactions Table 100 million records'
-    entity CARD_TRANSACTIONS_100mi {
+    entity CARD_TRANSACTIONS_100MI {
         key CT_ID			: Integer not null;
         key CT_DATE			: LocalDate not null;
         	CT_CARD_ID		: Integer not null;
             CT_CUST_ID		: Integer not null;
             CT_MER_ID		: Integer not null;
             CT_AMOUNT		: Double not null;
-            @Comment		: '0-No, 1-Yes'
+            @Comment		: 'Fraud: 0-No, 1-Yes'
             CT_FLAG_FRAUD	: Integer;
-            @Comment		: '0-Inactive, 1-Active'
+            @Comment		: 'Status: 0-Inactive, 1-Active'
             CT_STATUS		: Integer;
     } technical configuration {
       column store;
     };
     
 	@Comment				: 'Credit Card Transactions Table 2 billion records'
-    entity CARD_TRANSACTIONS_2bi {
+    entity CARD_TRANSACTIONS_2BI {
         key CT_ID			: Integer not null;
         key CT_DATE			: LocalDate not null;
         	CT_CARD_ID		: Integer not null;
             CT_CUST_ID		: Integer not null;
             CT_MER_ID		: Integer not null;
             CT_AMOUNT		: Double not null;
-            @Comment		: '0-No, 1-Yes'
+            @Comment		: 'Fraud: 0-No, 1-Yes'
             CT_FLAG_FRAUD	: Integer;
-            @Comment		: '0-Inactive, 1-Active'
+            @Comment		: 'Status: 0-Inactive, 1-Active'
             CT_STATUS		: Integer;
     } technical configuration {
       column store;
@@ -280,17 +280,17 @@ DP_MSG_HANA_PALOALTO
 i9Q5c#X/rE]75Nd]
 
 --NSE:
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" MERGE PARTITIONS;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" PAGE LOADABLE CASCADE;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" COLUMN LOADABLE CASCADE;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" 
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS_100MI" MERGE PARTITIONS;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS_100MI" PAGE LOADABLE CASCADE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS_100MI" COLUMN LOADABLE CASCADE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS_100MI" 
 PARTITION BY RANGE (year("CT_DATE"))
 	((partition '2006' <= values < '2018' , 
-	 partition '2018' <= values < '2021',
-	 partition others));			 
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" alter partition 1 column loadable;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" alter partition 2 page loadable;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" alter partition 3 column loadable;
+	  partition '2018' <= values < '2021',
+	  partition others));			 
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS_100MI" ALTER PARTITIION 1 PAGE LOADABLE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS_100MI" ALTER PARTITIION 2 PAGE LOADABLE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS_100MI" ALTER PARTITIION 3 COLUMN LOADABLE;
 
 
 
