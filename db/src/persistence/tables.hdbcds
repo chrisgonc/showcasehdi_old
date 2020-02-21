@@ -11,9 +11,7 @@ context TB {
             CUST_SEX		: String(1);
 			@Comment		: '1-Silver , 2-Gold , 3-Platinum'
             CUST_SEGMENT	: String(1);
-            @Comment		: 'BR-Brazil, AR-Argentina, CH-Chile'
             CUST_COUNTRY	: String(2);
-            @Comment		: 'States for Brazil only. For other countries we will use NA (not applicable)'
             CUST_STATE		: String(2);
 			@Comment		: 'Life spend, everything the customer has already paid in credit card invoices'
             CUST_LIFE_SPEND	: Double;
@@ -29,7 +27,7 @@ context TB {
 	@Comment					: 'Credit Card Table'
     entity CARD {
         key CARD_ID				: Integer not null;
-        	CARD_NUM			: Integer64 not null;
+        	CARD_NUM			: String(16) not null;
             CARD_VALIDITY		: String(5);
 			@Comment			: '1-Visa, 2-Mastercard, 3-ELO'
             CARD_FLAG			: Integer;
@@ -45,25 +43,60 @@ context TB {
       unload priority 0;
     };
 	
-	@Comment				: 'Credit Card Transactions Table'
-    entity CARD_TRANSACTIONS {
+	@Comment				: 'Credit Card Transactions Table 1 billion records'
+    entity CARD_TRANSACTIONS_1BI {
         key CT_ID			: Integer not null;
         key CT_DATE			: LocalDate not null;
         	CT_CARD_ID		: Integer not null;
             CT_CUST_ID		: Integer not null;
             CT_MER_ID		: Integer not null;
-            CT_AMOUNT		: Double;
-            @Comment		: '1-Yes, 2-No'
+            CT_AMOUNT		: Double not null;
+            @Comment		: '0-No, 1-Yes'
             CT_FLAG_FRAUD	: Integer;
-            @Comment		: '1-Active, 2-Suspended'
+            @Comment		: '0-Inactive, 1-Active'
             CT_STATUS		: Integer;
     } technical configuration {
       column store;
+/*
       partition by range (year(CT_DATE)) 
 			(partition '2008' <= values < '2019', 
-			 partition '2019' <= values < '2020',
+			 partition '2019' <= values < '2021',
 			 partition others);
+*/
     };
+
+	@Comment				: 'Credit Card Transactions Table 100 million records'
+    entity CARD_TRANSACTIONS_100mi {
+        key CT_ID			: Integer not null;
+        key CT_DATE			: LocalDate not null;
+        	CT_CARD_ID		: Integer not null;
+            CT_CUST_ID		: Integer not null;
+            CT_MER_ID		: Integer not null;
+            CT_AMOUNT		: Double not null;
+            @Comment		: '0-No, 1-Yes'
+            CT_FLAG_FRAUD	: Integer;
+            @Comment		: '0-Inactive, 1-Active'
+            CT_STATUS		: Integer;
+    } technical configuration {
+      column store;
+    };
+    
+	@Comment				: 'Credit Card Transactions Table 2 billion records'
+    entity CARD_TRANSACTIONS_2bi {
+        key CT_ID			: Integer not null;
+        key CT_DATE			: LocalDate not null;
+        	CT_CARD_ID		: Integer not null;
+            CT_CUST_ID		: Integer not null;
+            CT_MER_ID		: Integer not null;
+            CT_AMOUNT		: Double not null;
+            @Comment		: '0-No, 1-Yes'
+            CT_FLAG_FRAUD	: Integer;
+            @Comment		: '0-Inactive, 1-Active'
+            CT_STATUS		: Integer;
+    } technical configuration {
+      column store;
+    };
+
 
 	@Comment						: 'Merchants Table'
     entity MERCHANT {
@@ -246,4 +279,21 @@ zeus.hana.prod.us-east-1.whitney.dbaas.ondemand.com
 DP_MSG_HANA_PALOALTO
 i9Q5c#X/rE]75Nd]
 
+--NSE:
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" MERGE PARTITIONS;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" PAGE LOADABLE CASCADE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" COLUMN LOADABLE CASCADE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" 
+PARTITION BY RANGE (year("CT_DATE"))
+	((partition '2006' <= values < '2018' , 
+	 partition '2018' <= values < '2021',
+	 partition others));			 
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" alter partition 1 column loadable;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" alter partition 2 page loadable;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" alter partition 3 column loadable;
+
+
+
+Pendencias:
+Otimizar datatypes apos avaliar modelos estatísticos, principalmente o valor, flag fraude e estatus na tabela de transacoes
 */
