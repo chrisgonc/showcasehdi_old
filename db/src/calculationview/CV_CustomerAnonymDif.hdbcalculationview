@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_CustomerAnonymDif" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CV_CustomerAnonym"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="TB.CUSTOMER">
+    <resourceUri>TB.CUSTOMER</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AnonymizeView" id="Anonymize_1" method="differentialPrivacy">
+    <viewAttributes>
+      <viewAttribute id="CUST_ID" aggregationType="sum"/>
+      <viewAttribute id="CUST_CPF" aggregationType="sum"/>
+      <viewAttribute id="CUST_NAME"/>
+      <viewAttribute id="CUST_BIRTH_DATE"/>
+      <viewAttribute id="CUST_SEX"/>
+      <viewAttribute id="CUST_SEGMENT"/>
+      <viewAttribute id="CUST_COUNTRY"/>
+      <viewAttribute id="CUST_STATE"/>
+      <viewAttribute id="CUST_LIFE_SPEND" aggregationType="sum"/>
+      <viewAttribute id="CUST_AVG_SPEND" aggregationType="sum"/>
+      <viewAttribute id="CUST_INCOME" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_ID" source="CUST_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_CPF" source="CUST_CPF"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_NAME" source="CUST_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_BIRTH_DATE" source="CUST_BIRTH_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_SEX" source="CUST_SEX"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_SEGMENT" source="CUST_SEGMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_COUNTRY" source="CUST_COUNTRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_STATE" source="CUST_STATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_LIFE_SPEND" source="CUST_LIFE_SPEND"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_AVG_SPEND" source="CUST_AVG_SPEND"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_INCOME" source="CUST_INCOME"/>
+    </input>
+    <anonymizeParameterization>
+      <seqColumn>CUST_ID</seqColumn>
+      <epsilon>5</epsilon>
+      <sensitivity>65000</sensitivity>
+      <noisedColumn>CUST_INCOME</noisedColumn>
+    </anonymizeParameterization>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="CUST_ID"/>
+      <viewAttribute id="CUST_CPF"/>
+      <viewAttribute id="CUST_NAME"/>
+      <viewAttribute id="CUST_BIRTH_DATE"/>
+      <viewAttribute id="CUST_SEX"/>
+      <viewAttribute id="CUST_SEGMENT"/>
+      <viewAttribute id="CUST_COUNTRY"/>
+      <viewAttribute id="CUST_STATE"/>
+      <viewAttribute id="CUST_LIFE_SPEND"/>
+      <viewAttribute id="CUST_AVG_SPEND"/>
+      <viewAttribute id="CUST_INCOME"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="TB.CUSTOMER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_ID" source="CUST_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_CPF" source="CUST_CPF"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_NAME" source="CUST_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_BIRTH_DATE" source="CUST_BIRTH_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_SEX" source="CUST_SEX"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_SEGMENT" source="CUST_SEGMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_COUNTRY" source="CUST_COUNTRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_STATE" source="CUST_STATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_LIFE_SPEND" source="CUST_LIFE_SPEND"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_AVG_SPEND" source="CUST_AVG_SPEND"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_INCOME" source="CUST_INCOME"/>
+    </input>
+    <filter>&quot;CUST_SEGMENT&quot;=3</filter>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Anonymize_1">
+  <attributes>
+    <attribute id="CUST_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUST_ID"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_ID"/>
+    </attribute>
+    <attribute id="CUST_CPF" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CPF is similar to the Social Security Number in US, but for Brazilian Citizens and legally permanent foreigners"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_CPF"/>
+    </attribute>
+    <attribute id="CUST_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUST_NAME"/>
+      <maskingExpression>'***** UNAVAILABLE *****'</maskingExpression>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_NAME"/>
+    </attribute>
+    <attribute id="CUST_BIRTH_DATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUST_BIRTH_DATE"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_BIRTH_DATE"/>
+    </attribute>
+    <attribute id="CUST_SEX" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="M-Male, F-Female"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_SEX"/>
+    </attribute>
+    <attribute id="CUST_SEGMENT" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="1-Silver , 2-Gold , 3-Platinum"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_SEGMENT"/>
+    </attribute>
+    <attribute id="CUST_COUNTRY" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUST_COUNTRY"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_COUNTRY"/>
+    </attribute>
+    <attribute id="CUST_STATE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUST_STATE"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_STATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="CUST_LIFE_SPEND" order="9" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Life spend, everything the customer has already paid in credit card invoices"/>
+      <measureMapping columnObjectName="Anonymize_1" columnName="CUST_LIFE_SPEND"/>
+    </measure>
+    <measure id="CUST_AVG_SPEND" order="10" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Average monthly spend"/>
+      <measureMapping columnObjectName="Anonymize_1" columnName="CUST_AVG_SPEND"/>
+    </measure>
+    <measure id="CUST_INCOME" order="11" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Customer montlhy income"/>
+      <measureMapping columnObjectName="Anonymize_1" columnName="CUST_INCOME"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Anonymize_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="215"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="110" y="321"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

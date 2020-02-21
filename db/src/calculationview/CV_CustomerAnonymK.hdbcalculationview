@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_CustomerAnonymK" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CV_CustomerAnonymK"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="TB.CUSTOMER">
+    <resourceUri>TB.CUSTOMER</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AnonymizeView" id="Anonymize_1" method="kAnonymity">
+    <viewAttributes>
+      <viewAttribute id="CUST_SEX"/>
+      <viewAttribute id="CUST_SEGMENT"/>
+      <viewAttribute id="CUST_STATE"/>
+      <viewAttribute id="CUST_INCOME" aggregationType="sum"/>
+      <viewAttribute id="CUST_ID" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="TB.CUSTOMER">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_SEX" source="CUST_SEX"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_SEGMENT" source="CUST_SEGMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_STATE" source="CUST_STATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_INCOME" source="CUST_INCOME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_ID" source="CUST_ID"/>
+    </input>
+    <anonymizeParameterization>
+      <seqColumn>CUST_ID</seqColumn>
+      <k>5000</k>
+      <qidColumn id="CUST_SEX"/>
+      <qidColumn id="CUST_SEGMENT"/>
+      <qidColumn id="CUST_STATE"/>
+      <qidColumnHierarchy id="CUST_SEX">
+        <hierarchyEmbeded>F;*M;*</hierarchyEmbeded>
+      </qidColumnHierarchy>
+      <qidColumnHierarchy id="CUST_SEGMENT">
+        <hierarchyEmbeded>1;*2;*3;*</hierarchyEmbeded>
+      </qidColumnHierarchy>
+      <qidColumnHierarchy id="CUST_STATE">
+        <hierarchyEmbeded>AC;Norte;*AL;Nordeste;*AM;Norte;*AP;Norte;*BA;Nordeste;*CE;Nordeste;*DF;Centro-oeste;*ES;Sudeste;*GO;Centro-oeste;*MA;Nordeste;*MG;Sudeste;*MS;Centro-oeste;*MT;Centro-oeste;*PA;Nordeste;*PB;Nordeste;*PE;Nordeste;*PI;Nordeste;*PR;Sul;*RJ;Sudeste;*RN;Nordeste;*RO;Norte;*RR;Norte;*RS;Sul;*SC;Sul;*SE;Nordeste;*SP;Sudeste;*TO;Centro-oeste;*</hierarchyEmbeded>
+      </qidColumnHierarchy>
+    </anonymizeParameterization>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Anonymize_1">
+  <attributes>
+    <attribute id="CUST_SEX" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="M-Male, F-Female"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_SEX"/>
+    </attribute>
+    <attribute id="CUST_SEGMENT" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="1-Silver , 2-Gold , 3-Platinum"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_SEGMENT"/>
+    </attribute>
+    <attribute id="CUST_STATE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUST_STATE"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_STATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="CUST_INCOME" order="4" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Customer montlhy income"/>
+      <measureMapping columnObjectName="Anonymize_1" columnName="CUST_INCOME"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Anonymize_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="106" y="197"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

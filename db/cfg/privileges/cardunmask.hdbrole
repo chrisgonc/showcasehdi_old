@@ -1,0 +1,9 @@
+{ "role":{   
+	"name": "cardunmask",
+	"object_privileges":[
+	  {
+	    "name":"CV_Card","type": "VIEW","privileges":["UNMASKED"]
+	  }
+	]
+  }
+}
