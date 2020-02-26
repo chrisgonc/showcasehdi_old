@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_Customer" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
-<descriptions defaultDescription="CV_Customers"/>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_Customer" applyPrivilegeType="SQL_ANALYTIC_PRIVILEGE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false" runWithInvokerPrivileges="false">
+<descriptions defaultDescription="CV_Customer"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
@@ -21,18 +21,19 @@
     </attribute>
     <attribute id="CUST_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Name"/>
+      <maskingExpression>'*** FORBIDDEN ***'</maskingExpression>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_NAME"/>
     </attribute>
     <attribute id="CUST_BIRTH_DATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Birth Date"/>
+      <descriptions defaultDescription="Birth date"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_BIRTH_DATE"/>
     </attribute>
     <attribute id="CUST_SEX" order="5" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Sex: M-Male, F-Female"/>
+      <descriptions defaultDescription="M-Male, F-Female"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_SEX"/>
     </attribute>
     <attribute id="CUST_SEGMENT" order="6" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Segment: 1-Silver , 2-Gold , 3-Platinum"/>
+      <descriptions defaultDescription="1-Silver , 2-Gold , 3-Platinum"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_SEGMENT"/>
     </attribute>
     <attribute id="CUST_COUNTRY" order="7" displayAttribute="false" attributeHierarchyActive="false">
@@ -44,18 +45,13 @@
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_STATE"/>
     </attribute>
     <attribute id="CUST_LIFE_SPEND" order="9" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Life spend (everything the customer has already paid in credit card invoices)"/>
+      <descriptions defaultDescription="Life spend, everything the customer has already paid in credit card invoices"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_LIFE_SPEND"/>
     </attribute>
     <attribute id="CUST_AVG_SPEND" order="10" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Average monthly spend"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_AVG_SPEND"/>
-    </attribute>
-    <attribute id="CUST_INCOME" order="11" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Customer&apos;s montlhy income"/>
-      <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_INCOME"/>
-    </attribute>
-  </attributes>
+    </attribute></attributes>
   <calculatedAttributes/>
   <baseMeasures/>
   <calculatedMeasures/>

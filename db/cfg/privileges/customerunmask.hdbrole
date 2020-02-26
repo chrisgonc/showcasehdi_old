@@ -1,0 +1,9 @@
+{ "role":{   
+	"name": "customerunmask",
+	"object_privileges":[
+	  {"name":"CV_CustomerAnonymDif","type": "VIEW","privileges":["SELECT","UNMASKED"]},
+	  {"name":"CV_Customer","type": "VIEW","privileges":["SELECT","UNMASKED"]},
+	  {"name":"TB.CUSTOMER","type": "TABLE","privileges":["SELECT"]}
+	]
+  }
+}

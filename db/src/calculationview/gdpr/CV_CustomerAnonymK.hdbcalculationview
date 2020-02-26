@@ -28,7 +28,7 @@
     </input>
     <anonymizeParameterization>
       <seqColumn>CUST_ID</seqColumn>
-      <k>5000</k>
+      <k>50</k>
       <qidColumn id="CUST_SEX"/>
       <qidColumn id="CUST_SEGMENT"/>
       <qidColumn id="CUST_STATE"/>
@@ -82,4 +82,4 @@
     </shape>
   </shapes>
 </layout>
-</Calculation:scenario>
+</Calculation:scenario>   
