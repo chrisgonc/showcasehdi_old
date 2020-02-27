@@ -1,6 +1,6 @@
 context TB {
 
-	@Comment				: 'Customer Table'
+	@Comment				: 'Customer Table.'
     entity CUSTOMER {
         key CUST_ID			: Integer not null;
 			@Comment		: 'CPF is similar to the Social Security Number in US, but for Brazilian Citizens and legally permanent foreigners'
@@ -24,7 +24,7 @@ context TB {
       unload priority 0;
     };
 
-	@Comment					: 'Credit Card Table'
+	@Comment					: 'Credit Card Table.'
     entity CARD {
         key CARD_ID				: Integer not null;
         	CARD_NUM			: String(16) not null;
@@ -43,7 +43,7 @@ context TB {
       unload priority 0;
     };
 	
-	@Comment				: 'Credit Card Transactions Table 1 billion records'
+	@Comment				: 'Credit Card Transactions Table 1 billion records.'
     entity CARD_TRANSACTIONS_1BI {
         key CT_ID			: Integer not null;
         key CT_DATE			: LocalDate not null;
@@ -65,7 +65,7 @@ context TB {
 */
     };
 
-	@Comment				: 'Credit Card Transactions Table 100 million records'
+	@Comment				: 'Credit Card Transactions Table 100 million records.'
     entity CARD_TRANSACTIONS {
         key CT_ID			: Integer not null;
         key CT_DATE			: LocalDate not null;
@@ -81,7 +81,7 @@ context TB {
       column store;
     };
 
-	@Comment						: 'Merchants Table'
+	@Comment						: 'Merchants Table.'
     entity MERCHANT {
         key MER_ID					: Integer not null;
             MER_CNPJ				: Integer64 not null;
@@ -92,15 +92,13 @@ context TB {
 			MER_POSITION			: hana.ST_POINT(4326);
 			@Comment				: '1-Yes, 2-No'
 			MER_FLAG_VIRTUAL_STORE	: Integer;
-			MER_POSITION2			: hana.ST_POINT(3857);
 			MER_POSITION3			: hana.ST_GEOMETRY(4326);
-			MER_POSITION4			: hana.ST_GEOMETRY(3857);
     } technical configuration {
       column store;
       unload priority 0;
     };
 
-	@Comment						: 'Tweets Table, populated by Data Intelligence'
+	@Comment						: 'Tweets Table, populated by Data Intelligence.'
     entity TWEETS {
         key ID_STR			: String(25) not null;
             RETWEETED		: Boolean;
@@ -151,10 +149,10 @@ CREATE REMOTE SOURCE "SAOLEOPOLDO" ADAPTER "hanaodbc" CONFIGURATION '<?xml versi
 <PropertyEntry name="driver">libodbcHDB.so</PropertyEntry>
 <PropertyEntry name="server">saoleopoldo</PropertyEntry>
 <PropertyEntry name="port">30015</PropertyEntry>
-<PropertyEntry name="dml_mode">readonly</PropertyEntry>
+<PropertyEntry name="dml_mode">readwrite</PropertyEntry>
 <PropertyEntry name="linkeddatabase_mode">optimized</PropertyEntry>
 <PropertyEntry name="extraadapterproperties"></PropertyEntry>
-</ConnectionProperties>' WITH CREDENTIAL TYPE 'PASSWORD'
+</ConnectionProperties>' WITH CREDENTIAL TYPE 'PASSWORD' USING 'user=SAPADMIN;password=Saphana01';
 
 CREATE REMOTE SOURCE "PALOALTO" ADAPTER "hanaodbc" CONFIGURATION '<?xml version="1.0" encoding="UTF-8"?>
 <ConnectionProperties name="connection_properties">
@@ -163,13 +161,16 @@ CREATE REMOTE SOURCE "PALOALTO" ADAPTER "hanaodbc" CONFIGURATION '<?xml version=
 <PropertyEntry name="driver">libodbcHDB.so</PropertyEntry>
 <PropertyEntry name="server">paloalto</PropertyEntry>
 <PropertyEntry name="port">30015</PropertyEntry>
-<PropertyEntry name="dml_mode">readonly</PropertyEntry>
+<PropertyEntry name="dml_mode">readwrite</PropertyEntry>
 <PropertyEntry name="linkeddatabase_mode">optimized</PropertyEntry>
 <PropertyEntry name="extraadapterproperties"></PropertyEntry>
-</ConnectionProperties>' WITH CREDENTIAL TYPE 'PASSWORD'
+</ConnectionProperties>' WITH CREDENTIAL TYPE 'PASSWORD' USING 'user=SAPADMIN;password=Saphana01';
 
 MER_POSITION			: hana.ST_POINT(4326); --or 3857
 
+object owner "SHOWCASEHDI#OO" is not authorized to access the "PALOALTO.SAPADMIN.TESTE" synonym target; 
+this user needs to be granted "SELECT" ("EXECUTE" for procedures) privileges on the target object as well as
+ "LINKED DATABASE ON REMOTE SOURCE" privilege on remote source "PALOALTO". [8250528] 
 Rodar como SAPADMIN
 GRANT CREATE VIRTUAL TABLE ON REMOTE SOURCE "SQLSERVER" TO SHOWCASEHDI#OO
 GRANT CREATE VIRTUAL TABLE ON REMOTE SOURCE "PALOALTO" TO SHOWCASEHDI#OO;
@@ -178,11 +179,11 @@ ALTER SYSTEM ALTER CONFIGURATION ('indexserver.ini', 'SYSTEM') SET ('smart_data_
 
 Internal Presales DWC Agents
 =============================
-HANA_SAOLEOPOLDO
+HANA_SAOLEOPOLDO_AGT
 zeus.hana.prod.us-east-1.whitney.dbaas.ondemand.com
 22497
-DP_MSG_HANA_SAOLEOPOLDO
-<Y5qB+3Sz0r~+YDW
+DP_MSG_HANA_SAOLEOPOLDO_AGT
+AxvPnS_);>{AuS8;
 
 HANA_PALOALTO
 zeus.hana.prod.us-east-1.whitney.dbaas.ondemand.com
@@ -203,7 +204,98 @@ ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" ALTER PARTITIION 1 PAGE LOADABL
 ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" ALTER PARTITIION 2 COLUMN LOADABLE;
 ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS ALTER PARTITIION 3 COLUMN LOADABLE;
 
+grant AFL__SYS_AFL_APL_AREA_EXECUTE to SHOWCASEHDI#OO;
+grant AFLPM_CREATOR_ERASER_EXECUTE to SHOWCASEHDI#OO;
+call _SYS_REPO.GRANT_ACTIVATED_ROLE ('sap.pa.apl.base.roles::APL_EXECUTE', SHOWCASEHDI#OO);
 
+			MER_POSITION2			: hana.ST_POINT(3857);
+			MER_POSITION4			: hana.ST_GEOMETRY(3857);
+
+https://saoleopoldo.demo.local:30030/
 Pendencias:
 Otimizar datatypes apos avaliar modelos estatísticos, principalmente o valor, flag fraude e estatus na tabela de transacoes
+
+Documentações:
+https://jetcloud01proda21657417.hana.ondemand.com/public/sap/docs/hana/ide/help/default.html?a83fe9b8de1c4f4bbee3eea675851a04.html
+https://help.sap.com/viewer/3823b0f33420468ba5f1cf7f59bd6bd9/2.0.04/en-US/625d7733c30b4666b4a522d7fa68a550.html
+https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.04/en-US/1eb7eace0ee24021b1656e445322fed5.html
+https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.04/en-US/df46a790f0694b0d9820487b385d138c.html
+https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.04/en-US/ab883fca1e4047abafb7738b06131e46.html
+https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.04/en-US/556452cac83f423597d3a38a6f225e4b.html
+https://developers.sap.com/mission.xsa-get-started.html
+
+*/
+
+
+/*
+SC_BUSINESSUSER - Ordinary business analyst, follows GDPR restrictions: masking, anonymization and hidden columns for customer data. Access only metadata but not financial transactions
+SC_FINANCIALUSER - Ordinary financial analyst, follows some GDPR restrictions: masking, but no anonymization or hidden columns for customer data. Access metadata and financial transactions
+SC_BUSINESSMANAGER - Manager for business, does not follow all GDPR restrictions: Access to unsmasked and non-anonymazed customer's data, but keeps masking for credit card numbers
+SC_FINANCIALMANAGER - Manager for financials, does not follow all GDPR restrictions: Access to unsmasked credit card numbers, but keeps masking for customer's data
+SC_ASSISTANTSEGMENT1 - Assistant, follows all GDPR restrictions + only customers on segment 1: Access to masked credit card numbers and customer's data.
+SC_ASSISTANTCUSTOMER1 - Assistant, follows some GDPR restrictions and has access only for customer ID 1 (row level + column level restriction): Only access customer's data, with no masking.
+SC_DBA - IT profile, has access all views still protected by GDPR
+SC_SUPERUSER - IT superuser profile, has access all information, GDPR protected only by analytic privileges
+
+falta masking n HDBtable
+
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'businessuser', '', 'SC_BUSINESSUSER' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'financialuser', '', 'SC_FINANCIALUSER' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
+
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'businessuser', '', 'SC_BUSINESSMANAGER' );
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'customerunmask', '', 'SC_BUSINESSMANAGER' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'financialuser', '', 'SC_FINANCIALMANAGER' );
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'cardunmask', '', 'SC_FINANCIALMANAGER' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'assistantsegment1', '', 'SC_ASSISTANTSEGMENT1' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'assistantcustomer1', '', 'SC_ASSISTANTCUSTOMER1' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'dba', '', 'SC_DBA' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
+
+set schema "SHOWCASEHDI#DI";
+CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
+INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'showcasehdischema', '', 'SC_SUPERUSER' );
+--CALL SHOWCASEHDI#DI.REVOKE_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+CALL SHOWCASEHDI#DI.GRANT_CONTAINER_SCHEMA_ROLES( SHOWCASEHDI#DI.#ROLES, _SYS_DI.T_NO_PARAMETERS, ?, ?, ?);
+DROP TABLE SHOWCASEHDI#DI.#ROLES;
 */

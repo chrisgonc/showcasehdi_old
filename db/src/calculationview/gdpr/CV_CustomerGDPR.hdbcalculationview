@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_Customer" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false" runWithInvokerPrivileges="false">
-<descriptions defaultDescription="CV_Customer"/>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_CustomerGDPR" applyPrivilegeType="SQL_ANALYTIC_PRIVILEGE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="Customer data restricted by GDPR"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
@@ -12,20 +12,20 @@
 <logicalModel id="TB.CUSTOMER">
   <attributes>
     <attribute id="CUST_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Customer ID"/>
+      <descriptions defaultDescription="CUST_ID"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_ID"/>
     </attribute>
     <attribute id="CUST_CPF" order="2" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="CPF (similar to the Social Security Number in US, but for Brazilian Citizens and legally permanent foreigners)"/>
+      <descriptions defaultDescription="CPF is similar to the Social Security Number in US, but for Brazilian Citizens and legally permanent foreigners"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_CPF"/>
     </attribute>
     <attribute id="CUST_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Name"/>
+      <descriptions defaultDescription="CUST_NAME"/>
       <maskingExpression>'*** FORBIDDEN ***'</maskingExpression>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_NAME"/>
     </attribute>
     <attribute id="CUST_BIRTH_DATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Birth date"/>
+      <descriptions defaultDescription="CUST_BIRTH_DATE"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_BIRTH_DATE"/>
     </attribute>
     <attribute id="CUST_SEX" order="5" displayAttribute="false" attributeHierarchyActive="false">
@@ -37,11 +37,11 @@
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_SEGMENT"/>
     </attribute>
     <attribute id="CUST_COUNTRY" order="7" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Country"/>
+      <descriptions defaultDescription="CUST_COUNTRY"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_COUNTRY"/>
     </attribute>
     <attribute id="CUST_STATE" order="8" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="State"/>
+      <descriptions defaultDescription="CUST_STATE"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_STATE"/>
     </attribute>
     <attribute id="CUST_LIFE_SPEND" order="9" displayAttribute="false" attributeHierarchyActive="false">
@@ -51,10 +51,6 @@
     <attribute id="CUST_AVG_SPEND" order="10" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Average monthly spend"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_AVG_SPEND"/>
-    </attribute>
-    <attribute id="CUST_INCOME" order="11" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Customer montlhy income"/>
-      <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_INCOME"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>
