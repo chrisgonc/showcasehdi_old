@@ -191,18 +191,18 @@ zeus.hana.prod.us-east-1.whitney.dbaas.ondemand.com
 DP_MSG_HANA_PALOALTO
 i9Q5c#X/rE]75Nd]
 
---NSE:
+--NSE:https://blogs.sap.com/2019/07/22/increase-hana-data-capacity-with-sap-hana-native-storage-extensionnse./
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" 
+PARTITION BY RANGE (year("CT_DATE"))
+	((partition '2006' <= values < '2018', 
+	  partition '2018' <= values < '2021',
+	  partition others));			 
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" ALTER PARTITION 1 PAGE LOADABLE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" ALTER PARTITION 2 PAGE LOADABLE;
+ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" ALTER PARTITION 2 COLUMN LOADABLE;
 ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" MERGE PARTITIONS;
 ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" PAGE LOADABLE CASCADE;
 ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" COLUMN LOADABLE CASCADE;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" 
-PARTITION BY RANGE (year("CT_DATE"))
-	((partition '2006' <= values < '2018' , 
-	  partition '2018' <= values < '2021',
-	  partition others));			 
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" ALTER PARTITIION 1 PAGE LOADABLE;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS" ALTER PARTITIION 2 COLUMN LOADABLE;
-ALTER TABLE "SHOWCASEHDI"."TB.CARD_TRANSACTIONS ALTER PARTITIION 3 COLUMN LOADABLE;
 
 grant AFL__SYS_AFL_APL_AREA_EXECUTE to SHOWCASEHDI#OO;
 grant AFLPM_CREATOR_ERASER_EXECUTE to SHOWCASEHDI#OO;
@@ -214,6 +214,11 @@ call _SYS_REPO.GRANT_ACTIVATED_ROLE ('sap.pa.apl.base.roles::APL_EXECUTE', SHOWC
 https://saoleopoldo.demo.local:30030/
 Pendencias:
 Otimizar datatypes apos avaliar modelos estatísticos, principalmente o valor, flag fraude e estatus na tabela de transacoes
+Otimizar datatypes apos avaliar modelos estatísticos, principalmente o valor, flag fraude e estatus na tabela de transacoes
+falta masking n HDBtable
+masking and NSE in HDI?
+descobrir como debugar plano de execucao de calc views
+
 
 Documentações:
 https://jetcloud01proda21657417.hana.ondemand.com/public/sap/docs/hana/ide/help/default.html?a83fe9b8de1c4f4bbee3eea675851a04.html

@@ -1,8 +1,8 @@
 {
- "SQLSERVER_Customer" : {
+ "SQLSERVER_Tag" : {
     "target" : { 
        "logical_schema"	: "SQLSERVER",
-       "object" 		: "Customer" 
+       "object" 		: "Tag" 
     }
   }
 }
