@@ -242,9 +242,6 @@ SC_ASSISTANTCUSTOMER1 - Assistant, follows some GDPR restrictions and has access
 SC_DBA - IT profile, has access all views still protected by GDPR
 SC_SUPERUSER - IT superuser profile, has access all information, GDPR protected only by analytic privileges
 
-falta masking n HDBtable
-
-
 set schema "SHOWCASEHDI#DI";
 CREATE LOCAL TEMPORARY COLUMN TABLE SHOWCASEHDI#DI.#ROLES LIKE _SYS_DI.TT_SCHEMA_ROLES;
 INSERT INTO SHOWCASEHDI#DI.#ROLES ( ROLE_NAME, PRINCIPAL_SCHEMA_NAME, PRINCIPAL_NAME ) VALUES ( 'businessuser', '', 'SC_BUSINESSUSER' );
