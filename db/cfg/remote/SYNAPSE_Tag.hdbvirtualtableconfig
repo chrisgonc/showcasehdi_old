@@ -1,0 +1,8 @@
+{
+ "SYNAPSE_Tag" : {
+    "target" : { 
+       "logical_schema"	: "SYNAPSE",
+       "object" 		: "Tag" 
+    }
+  }
+}

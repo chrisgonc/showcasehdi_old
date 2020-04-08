@@ -4,7 +4,8 @@
 	  {"name":"CV_Card","type": "VIEW","privileges":["SELECT"]},
 	  {"name":"CV_CustomerAnonymDif","type": "VIEW","privileges":["SELECT"]},
 	  {"name":"CV_CustomerAnonymK","type": "VIEW","privileges":["SELECT"]},
-	  {"name":"CV_Merchant","type": "VIEW","privileges":["SELECT"]}
+	  {"name":"CV_Merchant","type": "VIEW","privileges":["SELECT"]},
+	  {"name":"TB.TWEETS","type": "TABLE","privileges":["SELECT"]}
 	]
   }
 }

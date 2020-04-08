@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_Card_Transactions" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CV_Card_Transactions" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false" analyticViewCompatibilityMode="false">
 <descriptions defaultDescription="CV_Card_Transactions"/>
 <localVariables/>
 <variableMappings/>
@@ -11,7 +11,7 @@
 <calculationViews/>
 <logicalModel id="TB.CARD_TRANSACTIONS">
   <attributes>
-    <attribute id="CT_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CT_ID" order="1" displayAttribute="false" attributeHierarchyActive="false" key="true">
       <descriptions defaultDescription="Transaction ID"/>
       <keyMapping columnObjectName="TB.CARD_TRANSACTIONS" columnName="CT_ID"/>
     </attribute>
@@ -53,7 +53,7 @@
 </logicalModel>
 <layout>
   <shapes>
-    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+    <shape expanded="false" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
       <upperLeftCorner x="40" y="85"/>
     </shape>
   </shapes>

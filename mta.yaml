@@ -8,6 +8,19 @@ modules:
    path: db
    requires:
     - name: hdi_db
+      properties:
+        TARGET_CONTAINER: ~{hdi-container-name}
+
+
+
+    - name: cross-container-service-1
+      group: SERVICE_REPLACEMENTS
+
+      properties:
+        key: ServiceName_1
+        service: ~{the-service-name}
+                          
+
 
 resources:
  - name: hdi_db
@@ -17,3 +30,11 @@ resources:
    properties:
       hdi-container-name: ${service-name}
    type: com.sap.xs.hdi-container
+
+ - name: cross-container-service-1
+   parameters:
+      service-name: showcasehdi_ups
+   properties:
+      the-service-name: ${service-name}
+   type: org.cloudfoundry.existing-service
+

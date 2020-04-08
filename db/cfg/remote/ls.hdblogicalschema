@@ -3,7 +3,7 @@
     "target" : { 
        "remote"   : "SQLSERVER",
        "database" : "sqlserver", 
-       "schema"   : "SalesLT"
+       "schema"   : "dbo"
     }
  }
 } 

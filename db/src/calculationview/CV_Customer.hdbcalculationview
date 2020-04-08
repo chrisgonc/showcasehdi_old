@@ -11,50 +11,57 @@
 <calculationViews/>
 <logicalModel id="TB.CUSTOMER">
   <attributes>
-    <attribute id="CUST_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_ID" order="1" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="Customer ID"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_ID"/>
     </attribute>
-    <attribute id="CUST_CPF" order="2" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_CPF" order="2" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="CPF (similar to the Social Security Number in US, but for Brazilian Citizens and legally permanent foreigners)"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_CPF"/>
     </attribute>
-    <attribute id="CUST_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="Name"/>
       <maskingExpression>'*** FORBIDDEN ***'</maskingExpression>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_NAME"/>
     </attribute>
-    <attribute id="CUST_BIRTH_DATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_BIRTH_DATE" order="4" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="Birth date"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_BIRTH_DATE"/>
     </attribute>
-    <attribute id="CUST_SEX" order="5" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_SEX" order="5" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="M-Male, F-Female"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_SEX"/>
     </attribute>
-    <attribute id="CUST_SEGMENT" order="6" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_SEGMENT" order="6" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="1-Silver , 2-Gold , 3-Platinum"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_SEGMENT"/>
     </attribute>
-    <attribute id="CUST_COUNTRY" order="7" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_COUNTRY" order="7" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="Country"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_COUNTRY"/>
     </attribute>
-    <attribute id="CUST_STATE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_STATE" order="8" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="State"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_STATE"/>
     </attribute>
-    <attribute id="CUST_LIFE_SPEND" order="9" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_LIFE_SPEND" order="9" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="Life spend, everything the customer has already paid in credit card invoices"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_LIFE_SPEND"/>
     </attribute>
-    <attribute id="CUST_AVG_SPEND" order="10" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_AVG_SPEND" order="10" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="Average monthly spend"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_AVG_SPEND"/>
     </attribute>
-    <attribute id="CUST_INCOME" order="11" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="CUST_INCOME" order="11" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
       <descriptions defaultDescription="Customer montlhy income"/>
       <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_INCOME"/>
+    </attribute>
+  
+    <attribute id="CUST_TWEETER_LOGIN" order="12" displayAttribute="false" attributeHierarchyActive="false" displayFolder="Customer">
+      <descriptions defaultDescription="Tweeter Login"/>
+  
+      <keyMapping columnObjectName="TB.CUSTOMER" columnName="CUST_TWEETER_LOGIN"/>
+  
     </attribute>
   </attributes>
   <calculatedAttributes/>

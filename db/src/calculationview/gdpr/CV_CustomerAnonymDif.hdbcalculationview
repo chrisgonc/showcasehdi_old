@@ -22,6 +22,8 @@
       <viewAttribute id="CUST_LIFE_SPEND" aggregationType="sum"/>
       <viewAttribute id="CUST_AVG_SPEND" aggregationType="sum"/>
       <viewAttribute id="CUST_INCOME" aggregationType="sum"/>
+    
+      <viewAttribute id="CUST_TWEETER_LOGIN"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>
@@ -37,6 +39,8 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="CUST_LIFE_SPEND" source="CUST_LIFE_SPEND"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="CUST_AVG_SPEND" source="CUST_AVG_SPEND"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="CUST_INCOME" source="CUST_INCOME"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUST_TWEETER_LOGIN" source="CUST_TWEETER_LOGIN"/>
     </input>
     <anonymizeParameterization>
       <seqColumn>CUST_ID</seqColumn>
@@ -80,6 +84,11 @@
     <attribute id="CUST_STATE" order="8" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="State"/>
       <keyMapping columnObjectName="Anonymize_1" columnName="CUST_STATE"/>
+    </attribute>
+  
+    <attribute id="CUST_TWEETER_LOGIN" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUST_TWEETER_LOGIN"/>
+      <keyMapping columnObjectName="Anonymize_1" columnName="CUST_TWEETER_LOGIN"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>

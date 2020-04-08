@@ -1,0 +1,9 @@
+{
+ "SYNAPSE" : { 
+    "target" : { 
+       "remote"   : "SYNAPSE",
+       "database" : "synapse", 
+       "schema"   : "dbo"
+    }
+ }
+} 
